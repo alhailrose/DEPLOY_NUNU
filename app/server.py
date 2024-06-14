@@ -13,7 +13,7 @@ app = FastAPI()
 # model = tfjs.converters.load_keras_model(json_saved_model)
 # model.load_weights('app/bin/')
 
-model = load_model('./explorentt_mobilenet_v2.h5')
+model = load_model('app/explorentt_mobilenet_v2.h5')
 
 class_names = np.array([
     'Air Terjun Oenesu',
