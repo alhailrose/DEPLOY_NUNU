@@ -4,6 +4,7 @@ import tensorflow as tf
 from keras.models import load_model
 from PIL import Image
 import io
+import os
 
 app = FastAPI()
 
@@ -383,3 +384,7 @@ async def predict(file: UploadFile = File(...)):
     })
 
     return response
+
+if __name__ == '__main__':
+    port = int(os.environ.get("PORT", 8002))
+    app.run(host='0.0.0.0', port=port)
