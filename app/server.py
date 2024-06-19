@@ -1,10 +1,12 @@
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File,Request
 import numpy as np
 import tensorflow as tf
 from keras.models import load_model
 from PIL import Image
 import io
 import os
+from app.authentication import auth_required
+
 
 app = FastAPI()
 
@@ -48,7 +50,8 @@ def read_root():
     return {'message': 'Image classification'}
 
 @app.post('/predict')
-async def predict(file: UploadFile = File(...)):
+@auth_required
+async def predict(request : Request,file: UploadFile = File(...)):
     """
     Predicts the class of an uploaded image.
 
@@ -66,7 +69,8 @@ async def predict(file: UploadFile = File(...)):
 
     prediction = model.predict(image)
     predicted_class = class_names[np.argmax(prediction)]
-    response = {'predicted_class': predicted_class}
+    response = {'predicted_class': predicted_class,
+                'user_id': request.user_id}
 
     if predicted_class == 'Air Terjun Oenesu':
         response.update({
